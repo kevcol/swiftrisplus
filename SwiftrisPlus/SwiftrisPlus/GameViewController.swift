@@ -16,11 +16,12 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
     var scene: GameScene!
     var swiftris:Swiftris!
     var panPointReference:CGPoint?
-    
+
     
     @IBOutlet weak var scoreLabel: UILabel!
 
     @IBOutlet weak var levelLabel: UILabel!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,9 +33,7 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
         // Create and configure scene
         scene = GameScene(size: skView.bounds.size)
         scene.scaleMode = .AspectFill
-        
         scene.tick = didTick
-        
         swiftris = Swiftris()
         swiftris.delegate = self
         swiftris.beginGame()
@@ -43,13 +42,17 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
         skView.presentScene(scene)
         
     }
+    
+    @IBAction func gamePaused(sender: UIButton) {
+        
+        swiftris.pauseButtonClicked()
+
+    }
 
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
     
-   
-   
     
     @IBAction func didTap(sender: UITapGestureRecognizer) {
         
@@ -129,7 +132,21 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
         }
     }
     
+    func gameDidPause(swiftris: Swiftris) {
+        
+        scene.stopTicking()
+    
+    }
+    
+    func gameDidResume(swiftris: Swiftris) {
+    
+        scene.startTicking()
+        
+        
+    }
+    
     func gameDidEnd(swiftris: Swiftris) {
+        
         view.userInteractionEnabled = false
         scene.stopTicking()
         
@@ -178,7 +195,7 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
         }
     }
     
-    // #3
+   
     func gameShapeDidMove(swiftris: Swiftris) {
         scene.redrawShape(swiftris.fallingShape!) {}
     }
