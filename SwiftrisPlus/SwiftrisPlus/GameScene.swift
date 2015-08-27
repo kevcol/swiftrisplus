@@ -19,7 +19,7 @@ class GameScene: SKScene {
     
     let gameLayer = SKNode()
     let shapeLayer = SKNode()
-    let LayerPosition = CGPoint(x: 6, y: -6)
+    let LayerPosition = CGPoint(x: 6, y: -46)//CGPoint(x: 6, y: -6)
     
     var tick:(() -> ())?
     var tickLengthMillis = TickLengthLevelOne

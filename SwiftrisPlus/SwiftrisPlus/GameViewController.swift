@@ -16,7 +16,7 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
     var scene: GameScene!
     var swiftris:Swiftris!
     var panPointReference:CGPoint?
-
+    var skView:SKView!
     
     @IBOutlet weak var scoreLabel: UILabel!
 
@@ -27,7 +27,7 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
         super.viewDidLoad()
         
         // Configure the view
-        let skView = view as! SKView
+        skView = view as! SKView
         skView.multipleTouchEnabled = false
 
         // Create and configure scene
@@ -44,8 +44,9 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
     }
     
     @IBAction func gamePaused(sender: UIButton) {
+        skView.paused = !skView.paused;
+//        swiftris.pauseButtonClicked()
         
-        swiftris.pauseButtonClicked()
 
     }
 

@@ -96,12 +96,14 @@ class Swiftris {
         if paused == true {
             paused = false
             println("Play!!!")
+            
             resumeGame()
             
         } else {
             paused = true
             println("Pause!!!")
             pauseGame()
+            
             
             
         }
