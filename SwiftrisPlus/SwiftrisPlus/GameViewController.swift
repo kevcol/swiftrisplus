@@ -21,7 +21,6 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
     @IBOutlet weak var scoreLabel: UILabel!
 
     @IBOutlet weak var levelLabel: UILabel!
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +36,7 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
         swiftris = Swiftris()
         swiftris.delegate = self
         swiftris.beginGame()
+       
         
         // Present the scene
         skView.presentScene(scene)
@@ -44,10 +44,20 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
     }
     
     @IBAction func gamePaused(sender: UIButton) {
-        skView.paused = !skView.paused;
-//        swiftris.pauseButtonClicked()
+       skView.paused = !skView.paused
         
+        if skView.paused {
+            
+            SKTAudio.sharedInstance().pauseBackgroundMusic()
 
+            
+        } else if !skView.paused {
+            
+            SKTAudio.sharedInstance().resumeBackgroundMusic()  
+        
+        }
+        
+       
     }
 
     override func prefersStatusBarHidden() -> Bool {
@@ -83,12 +93,12 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
     @IBAction func didSwipe(sender: UISwipeGestureRecognizer) {
         swiftris.dropShape()
     }
-    // #1
+   
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
     
-    // #2
+ 
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if let swipeRec = gestureRecognizer as? UISwipeGestureRecognizer {
             if let panRec = otherGestureRecognizer as? UIPanGestureRecognizer {
@@ -136,6 +146,7 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
     func gameDidPause(swiftris: Swiftris) {
         
         scene.stopTicking()
+       // pauseBackgroundMusic()
     
     }
     

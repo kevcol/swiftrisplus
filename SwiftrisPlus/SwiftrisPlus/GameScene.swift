@@ -36,6 +36,8 @@ class GameScene: SKScene {
         
         anchorPoint = CGPoint(x: 0, y: 1.0)
         
+       
+        
         let background = SKSpriteNode(imageNamed: "background")
         background.position = CGPoint(x: 0, y: 0)
         background.anchorPoint = CGPoint(x: 0, y: 1.0)
@@ -52,12 +54,16 @@ class GameScene: SKScene {
         shapeLayer.addChild(gameBoard)
         gameLayer.addChild(shapeLayer)
         
-        runAction(SKAction.repeatActionForever(SKAction.playSoundFileNamed("theme.mp3", waitForCompletion: true)))
+        //runAction(SKAction.repeatActionForever(SKAction.playSoundFileNamed("theme.mp3", waitForCompletion: true)))
+        
+        //Prepare sounds to load
+        SKTAudio.sharedInstance().playBackgroundMusic("theme.mp3")
+        SKTAudio.sharedInstance().backgroundMusicPlayer?.volume = 0.4
     }
     
     
     func playSound(sound:String) {
-        runAction(SKAction.playSoundFileNamed(sound, waitForCompletion: false))
+        //runAction(SKAction.playSoundFileNamed(sound, waitForCompletion: false))
     
     }
     

@@ -78,6 +78,7 @@ class Swiftris {
             nextShape = Shape.random(PreviewColumn, startingRow: PreviewRow)
         }
         delegate?.gameDidBegin(self)
+        
     }
     
     func resumeGame() {
@@ -89,26 +90,6 @@ class Swiftris {
     }
 
     
-    func pauseButtonClicked() {
-        
-        // if game playing, pause it.  if paused, play it
-        
-        if paused == true {
-            paused = false
-            println("Play!!!")
-            
-            resumeGame()
-            
-        } else {
-            paused = true
-            println("Pause!!!")
-            pauseGame()
-            
-            
-            
-        }
-    }
-
 
     
     func newShape() -> (fallingShape:Shape?, nextShape:Shape?) {
@@ -171,11 +152,14 @@ class Swiftris {
         delegate?.gameDidEnd(self)
     }
     
-    func pauseGame() {
+   /* func pauseGame() {
         
         delegate?.gameDidPause(self)
         paused = true
-    }
+       
+        
+    
+    } */
     
     
     func removeCompletedLines() -> (linesRemoved: Array<Array<Block>>, fallenBlocks: Array<Array<Block>>) {
