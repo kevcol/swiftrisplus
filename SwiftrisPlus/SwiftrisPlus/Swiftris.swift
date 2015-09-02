@@ -10,6 +10,8 @@ import SpriteKit
 
 var paused:Bool = false
 
+
+
 let NumColumns = 10
 let NumRows = 20
 
@@ -59,12 +61,14 @@ class Swiftris {
     
     var score:Int
     var level:Int
+    var time:Float
 
    
     init() {
         
         score = 0
         level = 1
+        time = 0.00
         
         fallingShape = nil
         nextShape = nil
@@ -152,14 +156,6 @@ class Swiftris {
         delegate?.gameDidEnd(self)
     }
     
-   /* func pauseGame() {
-        
-        delegate?.gameDidPause(self)
-        paused = true
-       
-        
-    
-    } */
     
     
     func removeCompletedLines() -> (linesRemoved: Array<Array<Block>>, fallenBlocks: Array<Array<Block>>) {

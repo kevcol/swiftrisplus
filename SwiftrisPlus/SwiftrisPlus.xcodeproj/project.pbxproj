@@ -149,11 +149,9 @@
 		172F16491B87889E0079524F /* SwiftrisPlus */ = {
 			isa = PBXGroup;
 			children = (
-				172F16541B87889E0079524F /* Main.storyboard */,
-				172F169D1B8798080079524F /* Swiftris.swift */,
-				172F16521B87889E0079524F /* GameViewController.swift */,
-				172F16501B87889E0079524F /* GameScene.swift */,
-				1761E0361B8BB54B005A3938 /* Shapes */,
+				17D6DA151B956CD600DBE388 /* Controller */,
+				17D6DA131B956CB400DBE388 /* Model */,
+				17D6DA141B956CC100DBE388 /* View */,
 				17CF207D1B8ECE5100AB4818 /* SKTUtils */,
 				172F164C1B87889E0079524F /* AppDelegate.swift */,
 				172F16571B87889E0079524F /* Images.xcassets */,
@@ -242,6 +240,32 @@
 				17CF20891B8ECE5100AB4818 /* Vector3.swift */,
 			);
 			path = SKTUtils;
+			sourceTree = "<group>";
+		};
+		17D6DA131B956CB400DBE388 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				172F169D1B8798080079524F /* Swiftris.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		17D6DA141B956CC100DBE388 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				172F16541B87889E0079524F /* Main.storyboard */,
+				1761E0361B8BB54B005A3938 /* Shapes */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		17D6DA151B956CD600DBE388 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				172F16501B87889E0079524F /* GameScene.swift */,
+				172F16521B87889E0079524F /* GameViewController.swift */,
+			);
+			name = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

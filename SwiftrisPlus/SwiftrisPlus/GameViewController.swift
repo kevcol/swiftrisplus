@@ -9,14 +9,15 @@
 import UIKit
 import SpriteKit
 
-
-
 class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognizerDelegate {
     
     var scene: GameScene!
     var swiftris:Swiftris!
     var panPointReference:CGPoint?
     var skView:SKView!
+    
+    // HOW DO I UPDATE THIS ticker LABEL???
+    @IBOutlet weak var ticker: UILabel!
     
     @IBOutlet weak var scoreLabel: UILabel!
 
@@ -37,6 +38,7 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
         swiftris.delegate = self
         swiftris.beginGame()
        
+       // ticker.text = "TIME: \(timeSinceStartDate)"
         
         // Present the scene
         skView.presentScene(scene)
@@ -116,6 +118,14 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
         swiftris.letShapeFall()
     }
     
+  
+    
+    public func updateTicker() {
+        
+        ticker.text = "blue"
+    }
+    
+    
     func nextShape() {
         let newShapes = swiftris.newShape()
         if let fallingShape = newShapes.fallingShape {
@@ -133,6 +143,7 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
         scoreLabel.text = "\(swiftris.score)"
         scene.tickLengthMillis = TickLengthLevelOne
         
+        
         // The following is false when restarting a new game
         if swiftris.nextShape != nil && swiftris.nextShape!.blocks[0].sprite == nil {
             scene.addPreviewShapeToScene(swiftris.nextShape!) {
@@ -146,7 +157,7 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
     func gameDidPause(swiftris: Swiftris) {
         
         scene.stopTicking()
-       // pauseBackgroundMusic()
+      
     
     }
     

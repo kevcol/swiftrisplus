@@ -11,12 +11,11 @@ import SpriteKit
 let BlockSize:CGFloat = 20.0
 let TickLengthLevelOne = NSTimeInterval(600)
 var startDate = NSDate()
+//var timeSinceStartDate = NSDate()
 
 
 class GameScene: SKScene {
-    
    
-    
     let gameLayer = SKNode()
     let shapeLayer = SKNode()
     let LayerPosition = CGPoint(x: 6, y: -46)//CGPoint(x: 6, y: -6)
@@ -24,7 +23,7 @@ class GameScene: SKScene {
     var tick:(() -> ())?
     var tickLengthMillis = TickLengthLevelOne
     var lastTick:NSDate?
-    var startDate:NSDate?
+    //var startDate:NSDate?
     var textureCache = Dictionary<String, SKTexture>()
     
     required init(coder aDecoder: NSCoder) {
@@ -35,9 +34,6 @@ class GameScene: SKScene {
         super.init(size: size)
         
         anchorPoint = CGPoint(x: 0, y: 1.0)
-        
-       
-        
         let background = SKSpriteNode(imageNamed: "background")
         background.position = CGPoint(x: 0, y: 0)
         background.anchorPoint = CGPoint(x: 0, y: 1.0)
@@ -59,6 +55,7 @@ class GameScene: SKScene {
         //Prepare sounds to load
         SKTAudio.sharedInstance().playBackgroundMusic("theme.mp3")
         SKTAudio.sharedInstance().backgroundMusicPlayer?.volume = 0.4
+        startDate = NSDate()
     }
     
     
@@ -69,18 +66,36 @@ class GameScene: SKScene {
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+        
         if lastTick == nil {
             return
         }
+        
         var timePassed = lastTick!.timeIntervalSinceNow * -1000.0
+        
         if timePassed > tickLengthMillis {
             lastTick = NSDate()
             tick?()
         }
-    }
+        
+        let now = NSDate()
+        let endDate: NSDate = NSDate()
+        
+        let dateComponents: NSDateComponents = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!.components(NSCalendarUnit.CalendarUnitSecond, fromDate: startDate, toDate: endDate, options: NSCalendarOptions(0))
+        
+        
+        let timeSinceStartDate = now.timeIntervalSinceDate(startDate)
+  
+        println("Counting much?: \(dateComponents.second)")
+        
+        var swiftris = Swiftris()
+
+        
+        }
     
     func startTicking() {
         lastTick = NSDate()
+        //ticker = lastTick
         
     }
     
