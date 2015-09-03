@@ -6,7 +6,10 @@
 //  Copyright (c) 2015 kevcol inc. All rights reserved.
 //
 
-// #1
+import SpriteKit
+
+var paused:Bool = false
+
 let NumColumns = 10
 let NumRows = 20
 
@@ -19,12 +22,20 @@ let PreviewRow = 1
 let PointsPerLine = 10
 let LevelThreshold = 1000
 
+
+
 protocol SwiftrisDelegate {
     // Invoked when the current round of Swiftris ends
     func gameDidEnd(swiftris: Swiftris)
     
     // Invoked immediately after a new game has begun
     func gameDidBegin(swiftris: Swiftris)
+    
+    // Invoked immediately after a game has paused
+    func gameDidPause(swiftris: Swiftris)
+    
+    // Invoked immediately after a game has un-paused
+    func gameDidResume(swiftris: Swiftris)
     
     // Invoked when the falling shape has become part of the game board
     func gameShapeDidLand(swiftris: Swiftris)
@@ -48,7 +59,8 @@ class Swiftris {
     
     var score:Int
     var level:Int
-    
+
+   
     init() {
         
         score = 0
@@ -60,13 +72,26 @@ class Swiftris {
     }
     
     func beginGame() {
+        
+        startDate = NSDate()
         if (nextShape == nil) {
             nextShape = Shape.random(PreviewColumn, startingRow: PreviewRow)
         }
         delegate?.gameDidBegin(self)
+        
     }
     
-    // #2
+    func resumeGame() {
+        
+        if (nextShape == nil) {
+            nextShape = Shape.random(PreviewColumn, startingRow: PreviewRow)
+        }
+        delegate?.gameDidResume(self)
+    }
+
+    
+
+    
     func newShape() -> (fallingShape:Shape?, nextShape:Shape?) {
         fallingShape = nextShape
         nextShape = Shape.random(PreviewColumn, startingRow: PreviewRow)
@@ -97,7 +122,7 @@ class Swiftris {
         return false
     }
     
-    // #1
+  
     func settleShape() {
         if let shape = fallingShape {
             for block in shape.blocks {
@@ -108,7 +133,7 @@ class Swiftris {
         }
     }
     
-    // #2
+    
     func detectTouch() -> Bool {
         if let shape = fallingShape {
             for bottomBlock in shape.bottomBlocks {
@@ -127,7 +152,16 @@ class Swiftris {
         delegate?.gameDidEnd(self)
     }
     
-    // #1
+   /* func pauseGame() {
+        
+        delegate?.gameDidPause(self)
+        paused = true
+       
+        
+    
+    } */
+    
+    
     func removeCompletedLines() -> (linesRemoved: Array<Array<Block>>, fallenBlocks: Array<Array<Block>>) {
         var removedLines = Array<Array<Block>>()
         for var row = NumRows - 1; row > 0; row-- {
@@ -146,11 +180,11 @@ class Swiftris {
             }
         }
         
-        // #3
+       
         if removedLines.count == 0 {
             return ([], [])
         }
-        // #4
+        
         let pointsEarned = removedLines.count * PointsPerLine * level
         score += pointsEarned
         if score >= level * LevelThreshold {
@@ -181,7 +215,7 @@ class Swiftris {
         return (removedLines, fallenBlocks)
     }
     
-    // #1
+    
     func dropShape() {
         if let shape = fallingShape {
             while detectIllegalPlacement() == false {
@@ -192,7 +226,7 @@ class Swiftris {
         }
     }
     
-    // #2
+    
     func letShapeFall() {
         if let shape = fallingShape {
             shape.lowerShapeByOneRow()
@@ -212,7 +246,7 @@ class Swiftris {
         }
     }
     
-    // #3
+    
     func rotateShape() {
         if let shape = fallingShape {
             shape.rotateClockwise()
@@ -224,7 +258,7 @@ class Swiftris {
         }
     }
     
-    // #4
+    
     func moveShapeLeft() {
         if let shape = fallingShape {
             shape.shiftLeftByOneColumn()
@@ -246,6 +280,8 @@ class Swiftris {
             delegate?.gameShapeDidMove(self)
         }
     }
+    
+  
     
     func removeAllBlocks() -> Array<Array<Block>> {
         var allBlocks = Array<Array<Block>>()

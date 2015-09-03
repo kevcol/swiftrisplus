@@ -16,7 +16,7 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
     var scene: GameScene!
     var swiftris:Swiftris!
     var panPointReference:CGPoint?
-    
+    var skView:SKView!
     
     @IBOutlet weak var scoreLabel: UILabel!
 
@@ -26,30 +26,44 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
         super.viewDidLoad()
         
         // Configure the view
-        let skView = view as! SKView
+        skView = view as! SKView
         skView.multipleTouchEnabled = false
 
         // Create and configure scene
         scene = GameScene(size: skView.bounds.size)
         scene.scaleMode = .AspectFill
-        
         scene.tick = didTick
-        
         swiftris = Swiftris()
         swiftris.delegate = self
         swiftris.beginGame()
+       
         
         // Present the scene
         skView.presentScene(scene)
         
+    }
+    
+    @IBAction func gamePaused(sender: UIButton) {
+       skView.paused = !skView.paused
+        
+        if skView.paused {
+            
+            SKTAudio.sharedInstance().pauseBackgroundMusic()
+
+            
+        } else if !skView.paused {
+            
+            SKTAudio.sharedInstance().resumeBackgroundMusic()  
+        
+        }
+        
+       
     }
 
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
     
-   
-   
     
     @IBAction func didTap(sender: UITapGestureRecognizer) {
         
@@ -79,12 +93,12 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
     @IBAction func didSwipe(sender: UISwipeGestureRecognizer) {
         swiftris.dropShape()
     }
-    // #1
+   
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
     
-    // #2
+ 
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if let swipeRec = gestureRecognizer as? UISwipeGestureRecognizer {
             if let panRec = otherGestureRecognizer as? UIPanGestureRecognizer {
@@ -129,7 +143,22 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
         }
     }
     
+    func gameDidPause(swiftris: Swiftris) {
+        
+        scene.stopTicking()
+       // pauseBackgroundMusic()
+    
+    }
+    
+    func gameDidResume(swiftris: Swiftris) {
+    
+        scene.startTicking()
+        
+        
+    }
+    
     func gameDidEnd(swiftris: Swiftris) {
+        
         view.userInteractionEnabled = false
         scene.stopTicking()
         
@@ -178,7 +207,7 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
         }
     }
     
-    // #3
+   
     func gameShapeDidMove(swiftris: Swiftris) {
         scene.redrawShape(swiftris.fallingShape!) {}
     }

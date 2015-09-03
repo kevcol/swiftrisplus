@@ -8,21 +8,23 @@
 
 import SpriteKit
 
-// #1
 let BlockSize:CGFloat = 20.0
-
 let TickLengthLevelOne = NSTimeInterval(600)
+var startDate = NSDate()
+
 
 class GameScene: SKScene {
-    // #2
+    
+   
+    
     let gameLayer = SKNode()
     let shapeLayer = SKNode()
-    let LayerPosition = CGPoint(x: 6, y: -6)
+    let LayerPosition = CGPoint(x: 6, y: -46)//CGPoint(x: 6, y: -6)
     
     var tick:(() -> ())?
     var tickLengthMillis = TickLengthLevelOne
     var lastTick:NSDate?
-    
+    var startDate:NSDate?
     var textureCache = Dictionary<String, SKTexture>()
     
     required init(coder aDecoder: NSCoder) {
@@ -33,6 +35,8 @@ class GameScene: SKScene {
         super.init(size: size)
         
         anchorPoint = CGPoint(x: 0, y: 1.0)
+        
+       
         
         let background = SKSpriteNode(imageNamed: "background")
         background.position = CGPoint(x: 0, y: 0)
@@ -50,12 +54,16 @@ class GameScene: SKScene {
         shapeLayer.addChild(gameBoard)
         gameLayer.addChild(shapeLayer)
         
-        runAction(SKAction.repeatActionForever(SKAction.playSoundFileNamed("theme.mp3", waitForCompletion: true)))
+        //runAction(SKAction.repeatActionForever(SKAction.playSoundFileNamed("theme.mp3", waitForCompletion: true)))
+        
+        //Prepare sounds to load
+        SKTAudio.sharedInstance().playBackgroundMusic("theme.mp3")
+        SKTAudio.sharedInstance().backgroundMusicPlayer?.volume = 0.4
     }
     
-    // #2
+    
     func playSound(sound:String) {
-        runAction(SKAction.playSoundFileNamed(sound, waitForCompletion: false))
+        //runAction(SKAction.playSoundFileNamed(sound, waitForCompletion: false))
     
     }
     
@@ -73,6 +81,7 @@ class GameScene: SKScene {
     
     func startTicking() {
         lastTick = NSDate()
+        
     }
     
     func stopTicking() {
@@ -135,10 +144,10 @@ class GameScene: SKScene {
         runAction(SKAction.waitForDuration(0.05), completion: completion)
     }
     
-    // #1
+    
     func animateCollapsingLines(linesToRemove: Array<Array<Block>>, fallenBlocks: Array<Array<Block>>, completion:() -> ()) {
         var longestDuration: NSTimeInterval = 0
-        // #2
+        
         for (columnIdx, column) in enumerate(fallenBlocks) {
             for (blockIdx, block) in enumerate(column) {
                 let newPosition = pointForColumn(block.column, row: block.row)
@@ -158,7 +167,7 @@ class GameScene: SKScene {
         
         for (rowIdx, row) in enumerate(linesToRemove) {
             for (blockIdx, block) in enumerate(row) {
-                // #4
+                
                 let randomRadius = CGFloat(UInt(arc4random_uniform(400) + 100))
                 let goLeft = arc4random_uniform(100) % 2 == 0
                 
@@ -166,7 +175,7 @@ class GameScene: SKScene {
                 point = CGPointMake(point.x + (goLeft ? -randomRadius : randomRadius), point.y)
                 
                 let randomDuration = NSTimeInterval(arc4random_uniform(2)) + 0.5
-                // #5
+                
                 var startAngle = CGFloat(M_PI)
                 var endAngle = startAngle * 2
                 if goLeft {
@@ -177,7 +186,7 @@ class GameScene: SKScene {
                 let archAction = SKAction.followPath(archPath.CGPath, asOffset: false, orientToPath: true, duration: randomDuration)
                 archAction.timingMode = .EaseIn
                 let sprite = block.sprite!
-                // #6
+               
                 sprite.zPosition = 100
                 sprite.runAction(
                     SKAction.sequence(
@@ -185,7 +194,7 @@ class GameScene: SKScene {
                             SKAction.removeFromParent()]))
             }
         }
-        // #7
+       
         runAction(SKAction.waitForDuration(longestDuration), completion:completion)
     }
 }

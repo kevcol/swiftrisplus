@@ -129,7 +129,7 @@ class Shape: Hashable, Printable {
         }
     }
     
-    // #1
+    
     final func rotateClockwise() {
         let newOrientation = Orientation.rotate(orientation, clockwise: true)
         rotateBlocks(newOrientation)
@@ -158,8 +158,6 @@ class Shape: Hashable, Printable {
         shiftBy(-1, rows:0)
     }
 
-    
-    // #2
     final func shiftBy(columns: Int, rows: Int) {
         self.column += columns
         self.row += rows
@@ -169,7 +167,6 @@ class Shape: Hashable, Printable {
         }
     }
     
-    // #3
     final func moveTo(column: Int, row:Int) {
         self.column = column
         self.row = row
@@ -178,7 +175,7 @@ class Shape: Hashable, Printable {
     
     final class func random(startingColumn:Int, startingRow:Int) -> Shape {
         switch Int(arc4random_uniform(NumShapeTypes)) {
-            // #4
+            
         case 0:
             return SquareShape(column:startingColumn, row:startingRow)
         case 1:
